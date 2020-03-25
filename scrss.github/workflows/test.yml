@@ -1,0 +1,35 @@
+name: Test
+on: [push]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone
+        uses: actions/checkout@master
+
+      - name: fetch dependencies
+        uses: ./.github/actions/go
+        with:
+          args: go mod download
+
+      - name: build
+        uses: ./.github/actions/go
+        with:
+          args: go build
+
+      - name: fmt
+        uses: ./.github/actions/go
+        with:
+          # See .github/actions/go/check-go-fmt
+          args: check-go-fmt
+
+      - name: vet
+        uses: ./.github/actions/go
+        with:
+          args: go vet
+
+      - name: test
+        uses: ./.github/actions/go
+        with:
+          args: go test
