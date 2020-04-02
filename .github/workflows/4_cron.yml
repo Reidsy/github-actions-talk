@@ -1,0 +1,7 @@
+# name: Cron Trigger
+# on:
+#     schedule:
+#       # * is a special character in YAML so you have to quote this string
+#       - cron:  '*/15 * * * *'
+
+#     #   every morning at 10am you want to get a list of cards in a project board and count the numbers

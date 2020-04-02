@@ -1,0 +1,10 @@
+name: 'js-labeler'
+description: 'Automatically add a label to new github issues'
+inputs:
+  github_token:  # id of input
+    description: 'Github Token'
+    required: true
+    default: 'ABC-123'
+runs:
+  using: 'node12'
+  main: 'entrypoint.js'

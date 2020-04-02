@@ -1,0 +1,27 @@
+name: Custom Github Actions
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  local_action:
+    name: Local Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: inline action
+        run: |
+          echo "Hello World"
+          echo "How are you going?"
+
+      - name: in-repo action
+        uses: ./.github/actions/greeting
+        with:
+          args: Wyzant Tech Talks
+
+  third_party_actions:
+    name: Third Party Actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: reidsy/third-party-greeting-action
+

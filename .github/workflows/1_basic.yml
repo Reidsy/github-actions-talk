@@ -1,4 +1,5 @@
-name: Test
+name: Basic Github Actions
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on: [push]
 jobs:
   test:

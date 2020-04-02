@@ -1,0 +1,13 @@
+name: Issue Creation Trigger
+on:
+  issues:
+    types: [opened]
+jobs:
+  label:
+    name: Labeler
+    runs-on: ubuntu-latest
+    steps:
+      - name: typescript action
+        uses: ./.github/actions/js-labeler
+        with:
+          github_token: DEF-456
