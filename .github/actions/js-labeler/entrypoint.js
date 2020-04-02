@@ -6,7 +6,7 @@ async function run() {
     const octokit = new github.GitHub(github_token);
     const payload = github.context.payload;
     let response = octokit.issues.addLabels({
-        owner: payload.repository.owner,
+        owner: payload.repository.owner.login,
         repo: payload.repository.name,
         issue_number: payload.issue.number,
         labels: ["test-label"],
