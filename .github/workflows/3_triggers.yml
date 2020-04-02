@@ -2,11 +2,15 @@ name: Issue Creation Trigger
 on:
   issues:
     types: [opened]
+
 jobs:
   label:
     name: Labeler
     runs-on: ubuntu-latest
     steps:
+      - name: clone
+        uses: actions/checkout@master
+
       - name: typescript action
         uses: ./.github/actions/js-labeler
         with:

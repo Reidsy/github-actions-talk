@@ -14,6 +14,10 @@ jobs:
           echo "Hello World"
           echo "How are you going?"
 
+      # Note: this is required, so that the next action has been checked out and is available
+      - name: clone
+        uses: actions/checkout@master
+
       - name: in-repo action
         uses: ./.github/actions/greeting
         with:
