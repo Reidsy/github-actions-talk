@@ -3,9 +3,14 @@ const core = require('@actions/core');
 
 async function run() {
     const github_token = core.getInput('github_token');
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log("The github_token is: ", github_token);
-    console.log(`The event payload: ${payload}`);
+    const octokit = new github.GitHub(github_token);
+    const payload = github.context.payload;
+    octokit.issues.addLabels({
+        owner: payload.repository.owner,
+        repo: payload.repository.name,
+        issue_number: payload.issue.number,
+        labels: "test-label",
+    });
 }
 
 run();

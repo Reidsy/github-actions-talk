@@ -14,4 +14,4 @@ jobs:
       - name: typescript action
         uses: ./.github/actions/js-labeler
         with:
-          github_token: DEF-456
+          github_token: ${{ secrets.GITHUB_TOKEN }}
