@@ -1,4 +1,4 @@
-name: Issue Creation Trigger
+name: 3 Issue Creation Trigger
 on:
   issues:
     types: [opened]

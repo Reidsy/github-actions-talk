@@ -1,4 +1,4 @@
-name: Basic Github Actions
+name: 1 Basic Github Actions
 # https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on: [push]
 jobs:

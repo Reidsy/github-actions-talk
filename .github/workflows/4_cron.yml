@@ -1,7 +1,14 @@
-# name: Cron Trigger
-# on:
-#     schedule:
-#       # * is a special character in YAML so you have to quote this string
-#       - cron:  '*/15 * * * *'
-
-#     #   every morning at 10am you want to get a list of cards in a project board and count the numbers
+name: 4 Cron Trigger
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 10 * * *'
+jobs:
+  local_action:
+    name: Local Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: inline action
+        run: |
+            echo "Hello World"
+            echo "How are you going?"

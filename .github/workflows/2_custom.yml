@@ -1,4 +1,4 @@
-name: Custom Github Actions
+name: 2 Custom Github Action
 on:
   push:
     branches:
@@ -22,10 +22,4 @@ jobs:
         uses: ./.github/actions/greeting
         with:
           args: Wyzant Tech Talks
-
-  third_party_actions:
-    name: Third Party Actions
-    runs-on: ubuntu-latest
-    steps:
-      - uses: reidsy/third-party-greeting-action
 
