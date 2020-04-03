@@ -23,3 +23,11 @@ jobs:
         with:
           args: Wyzant Tech Talks
 
+  third_party_actions:
+    name: Third Party Actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/hello-world-docker-action@master
+        with:
+          who-to-greet: "Wyzant tech talks"
+
