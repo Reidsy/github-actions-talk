@@ -27,7 +27,8 @@ jobs:
     name: Third Party Actions
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/hello-world-docker-action@master
+      - name: Third-party JS action
+        uses: actions/hello-world-javascript-action
         with:
           who-to-greet: "Wyzant tech talks"
 

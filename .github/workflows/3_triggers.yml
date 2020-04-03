@@ -11,7 +11,7 @@ jobs:
       - name: clone
         uses: actions/checkout@master
 
-      - name: typescript action
+      - name: javascript action
         uses: ./.github/actions/js-labeler
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
