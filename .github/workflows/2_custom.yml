@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Third-party JS action
-        uses: actions/hello-world-javascript-action
+        uses: actions/hello-world-javascript-action@master
         with:
           who-to-greet: "Wyzant tech talks"
 
