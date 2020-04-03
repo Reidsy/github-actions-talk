@@ -1,9 +1,11 @@
+# https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
 name: 1 Basic Github Actions
 # https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on: [push]
 jobs:
   test:
     name: Test
+    # https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#supported-runners-and-hardware-resources
     runs-on: ubuntu-latest
     steps:
       # https://github.com/actions/checkout

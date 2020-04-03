@@ -5,8 +5,8 @@ on:
       - master
 
 jobs:
-  local_action:
-    name: Local Actions
+  inline_action:
+    name: Inline Action
     runs-on: ubuntu-latest
     steps:
       - name: inline action
@@ -14,6 +14,10 @@ jobs:
           echo "Hello World"
           echo "How are you going?"
 
+  in_repo_action:
+    name: In-Repo Action
+    runs-on: ubuntu-latest
+    steps:
       # Note: this is required, so that the next action has been checked out and is available
       - name: clone
         uses: actions/checkout@master

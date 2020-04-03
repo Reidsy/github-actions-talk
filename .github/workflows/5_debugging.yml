@@ -1,0 +1,15 @@
+name: 5 Debugging
+on:
+  push:
+    branches:
+      - debug
+jobs:
+  debug:
+    name: Debugging
+    runs-on: ubuntu-latest
+    steps:
+      - name: print everything
+        run: |
+          env
+
+      - uses: mxschmitt/action-tmate@v2
