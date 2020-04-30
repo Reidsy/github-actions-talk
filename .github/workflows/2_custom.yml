@@ -34,5 +34,5 @@ jobs:
       - name: Third-party JS action
         uses: actions/hello-world-javascript-action@master
         with:
-          who-to-greet: "Wyzant tech talks"
+          who-to-greet: "Wyzant tech talks" # these are converted to envar INPUT_WHO-TO-GREET
 

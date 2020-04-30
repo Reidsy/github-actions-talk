@@ -8,9 +8,17 @@ jobs:
     name: Debugging
     runs-on: ubuntu-latest
     steps:
+      - name: clone
+        uses: actions/checkout@master
+
+      - name: set envar
+        run: |
+          echo "::set-env name=MY_SPECIAL_ENVAR::HelloWyzant"
+
       - name: print everything
         run: |
           env
 
       # https://github.com/marketplace/actions/debugging-with-tmate
       # - uses: mxschmitt/action-tmate@v2
+
