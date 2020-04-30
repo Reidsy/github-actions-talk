@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Github Actions Presentation</title>
+    <meta charset="utf-8">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+
+        img {
+            width: 90%;
+        }
+
+        .remark-code,
+        .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+        }
+
+        .left-column {
+            width: 50%;
+            float: left;
+        }
+
+        .right-column {
+            width: 50%;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="source">
+
+class: center, middle
+
+# Github Actions
+
+https://github.com/features/actions
+
+???
+
+So I'm going to talk today about Github Actions what it is and how to use it. I'll also tie in how we could and why we should use this at Wyzant in the future.
+
+---
+
+# Agenda
+
+1. What is Github Actions?
+
+2. Concepts
+
+3. Examples
+
+4. What makes GitHub actions so awesome?
+
+5. What's not awesome
+
+6. Coming to GitHub Enterprise
+
+???
+
+We'll start with a quick overview of github actions.
+
+Move on to the two core components.
+
+And then dive into some examples.
+
+After that I'll discuss the good, the bad and how we could make use of this at Wyzant if actions ever comes to github enterprise.
+
+---
+
+# What is Github Actions?
+
+- GitHubs' attempt at CI/CD
+
+- Typical Usage:
+  - Automated test suites
+  - Automated deployments
+  - Scheduled tasks
+
+- Some example uses within Wyzant
+  - Project automation - assign newly created issues to a project
+  - Automate the Service Registry - repos automatically publish themselves to the service registry
+  - Slack integration: Send someone a message when they have been assigned to a PR
+
+???
+
+Simply put its Github's attempt at CI/CD.
+
+It does the typical things you'd expect including automated test suites, automated deployments and scheduled tasks.
+
+However github actions is basically just running code when certain events occur so you can also do a lot more. For example:
+- Project Automation: At the moment when opening a ticket with systems, you have to create a new issue in the systems repo and then manually add it to the systems project triage list. With github actions you could instead hook into the issue created event and automatically move that issue into the systems project triage list.
+- Service Registry: We could automate the generation of this wiki page so that it pulls the information from each of the repos making it easier to keep up to date.
+- Slack integration: Or something as simple as sending a Slack message when someone has been assigned to a PR
+
+So while there are probably other ways of achieving these goals, they are things you can do with Actions.
+
+---
+
+# Concepts
+
+.left-column[
+## Workflows
+![Workflow](workflow.png)
+]
+.right-column[
+## Actions
+![Actions](actions.png)
+]
+
+???
+
+There are two core concepts that you need to know.
+
+Workflows
+
+A workflow primarily consists of a list of jobs and a trigger.
+A trigger is an event that occurs inside github that will start processing the jobs. These can include events such as when a push occurs, when a PR is opened, or when a tag is created.
+Each job defined in a workflow will contain a list of actions known as steps that are run in sequence.
+
+
+Actions
+
+An action is basically any folder that contains either a Dockerfile or action.yml file. Here we have two actions "greeting" and "js-labeler".
+
+---
+
+class: center, middle
+
+# Examples
+
+???
+
+# 1_basic.yml
+
+So we'll start with a basic example. This is a workflow that runs tests and a code formatter on a go codebase. Working from top to bottom:
+- name is the name of the workflow.
+- on is the trigger that will start this workflow. In this case, the workflow will be run on every push to the repo in any branch. As mentioned before there are many different events available, we'll see a few examples of these later.
+- jobs is list of jobs. This workflow has a single job called "Test" that uses ubuntu as it's OS. There are currently three different OS's Ubuntu, Windows and MacOS.
+- Each job runs on a single workspace and steps lists each of the actions we will be running in this workspace. The first step is to clone the repo. Here we are using an action `checkout`. The first part of the string is the path to the action repository, while the part after the at-symbol is the branch, tag or sha that we want to use. Repositories that are part of `actions` are official github actions. We can see the source code for this action by going to the url.
+- So the next action checks to see if our go code was formatted correctly. It uses an action made by this (cedrickring) developer and you will find the action source code in the `go1.13` directory of the `golang-action` repository. We can also see that we are using the tag 1.5.1.
+
+  `with args` is used to specify what arguments to run this action with. In this case, this will add an argument to the docker run command and overwrite the containers default run arguments. The command test -z is simply checking to see if go fmt has any output which means it has fixed some formatting, in which case we would fail the test.
+
+  `env` is a map of key value pairs which will be used to set environment variables inside the container.
+
+- show github.com actions running in the repo
+
+# 2_custom.yml
+
+Here we've got a more complex `on` key. This workflow will run whenever there is a push to the branches listed, in this case just master.
+
+- more advanced `on`
+- three different jobs that can run concurrently
+- the first is an inline action. The `run` key will run commands on the host operating system instead of inside nodejs or a docker container.
+- the second is an action I've written myself. Because it lives inside the repo at .github/actions/greeting we have to clone the repo first so the action is available to run.
+    - dive into the docker greeting
+- third action is an external action similar to what we saw in the last example.
+
+# 3_triggers.yml
+
+- walk through workflow
+- create an issue
+- navigate to actions to see action run
+- once it's run, navigate back to the issue to see the label applied
+
+# 4_cron.yml
+
+- walk through the workflow
+- show actions running at 5am on github
+
+# 5_debugging.yml
+
+- uncomment tmux line 16
+- push to debug branch
+- check the output for the envar MY_SPECIAL_ENVAR
+- and then join the tmux session to move around the code
+
+# scrss (production) examples
+
+- test.yml
+- deploy.yml
+
+---
+
+# What makes GitHub actions so awesome?
+
+- Defined in the repo
+
+- Actions are sharable
+
+- Different OS environments
+
+???
+
+They are defined in the repo.
+- Deployment configuration is right next to the code, exactly where you would expect it to be.
+- This means that at Wyzant we would not require much assistance from systems to edit them.
+- This also means they are version controlled so if we break something, it is easier to track down where the issue occurred.
+- They are defined in code, so no more navigating through a confusing UI to find the one checkbox that needs to be enabled, instead you can sift through confusing documentation to find that one flag you need to set.
+
+Actions are sharable.
+- As we looked at earlier in the presentation, there is a massive number of actions that have already been created and shared within GitHub. We would be able to leverage these saving development effort.
+- It would also mean we can share actions amongst repos, for example a go testing action could help us run standard actions across all go repos.
+
+Different OS environments.
+Different OS environments make it very easy to run a large number of tests. An example where this would be useful is cross browser testing enabling us to easily run automated tests on Safari and Edge instead of just a single browser on a single operating system.
+
+---
+
+# What's not awesome
+
+- Debugging is ... awful
+
+- Lack of manual triggering of workflows
+
+- Cannot share workflows
+
+???
+
+Debugging is awful. I don't think I need to say anything else there
+
+There doesn't appear to be a simple way to manually trigger workflows at the moment, so this doesn't appear to be a solution for things like manually running ETL's, or swapping blue and green deploys.
+
+Cannot share workflows. It would be nice to be able to standardise a deployment for go applications and then insert the same workflow in every go application we run. Currently there doesn't appear to be an easy way to do this.
+
+
+
+---
+
+class: center, middle
+
+# Coming to GitHub Enterprise
+
+(at some unknown point in the future)
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+        var slideshow = remark.create();
+    </script>
+</body>
+
+</html>

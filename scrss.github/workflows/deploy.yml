@@ -34,6 +34,7 @@ jobs:
           IMAGE_TAG=`echo "${GITHUB_REF}" | cut -d'/' -f3`
           echo "::set-env name=IMAGE_ID::$PACKAGE_REPO/$IMAGE_NAME/$IMAGE_TAG"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login $PACKAGE_REPO -u $REPO_OWNER --password-stdin
+
       - name: gcloud login
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -48,12 +49,15 @@ jobs:
           gcloud -q compute config-ssh
           DOCKER_HOST=ssh://$USER@${{ secrets.GCloudInstance }}.${{ secrets.GCloudZone }}.${{ secrets.GCloudProject }}:22
           echo "::set-env name=DOCKER_HOST::$DOCKER_HOST"
+
       - name: build
         run: |
           docker build -t $IMAGE_ID --build-arg GIT_COMMIT=${GITHUB_SHA} .
+
       - name: publish
         run: |
           docker push $IMAGE_ID
+
       - name: deploy
         run: |
           docker stop soundcloud-rss || true
